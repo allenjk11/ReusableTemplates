@@ -27,7 +27,9 @@ jobs:
             echo " Gitleaks is installed "
             mv gitleaks /usr/local/bin
     - name: Run Gitleaks
-      run: gitleaks detect --redact --source $env_var -r ~/Gitleaksreport.csv -f csv
+      run: |
+       pwd && ls $env_var
+       gitleaks detect --redact --source $env_var -r ~/Gitleaksreport.csv -f csv
     - name: Upload Gitleaks Report
       uses: actions/upload-artifact@v2
       with:
