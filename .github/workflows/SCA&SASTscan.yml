@@ -25,19 +25,19 @@ jobs:
             echo " Gitleaks is installed "
             mv gitleaks /usr/local/bin
     - name: Run Gitleaks
-      run: gitleaks detect --redact --source $env:CODE_LOC -r ~/Gitleaksreport.txt -f csv
+      run: gitleaks detect --redact --source "$env:CODE_LOC" -r ~/Gitleaksreport.csv -f csv
     - name: Upload Gitleaks Report
       uses: actions/upload-artifact@v2
       with:
         name: Gitleaks-report
-        path: ~/Gitleaksreport.txt
+        path: ~/Gitleaksreport.csv
     - name: Download OWASP Dependency-Check
       run: |
        wget -q -O dependency-check-8.4.0-release.zip  https://github.com/jeremylong/DependencyCheck/releases/download/v8.4.0/dependency-check-8.4.0-release.zip
        ls -l
        unzip -qq dependency-check-8.4.0-release.zip   
     - name: Run OWASP Dependency-Check
-      run: ./dependency-check/bin/dependency-check.sh --scan  $env:CODE_LOC --format HTML --project "Dependencychecker_DevOpsTest" --out ~/Dependcheckreport   
+      run: ./dependency-check/bin/dependency-check.sh --scan  "$env:CODE_LOC" --format HTML --project "Dependencychecker_DevOpsTest" --out ~/Dependcheckreport   
    
     - name: Upload OWASP Dependency-Check Report
       uses: actions/upload-artifact@v2
@@ -52,7 +52,7 @@ jobs:
        chmod +x findsecbugs.sh
        ls -l
     - name: Run FindSecBugs
-      run: ./findsecbugs.sh -progress -output ~/findsecbugs-results.html -html  $env:CODE_LOC/target/*.jar
+      run: ./findsecbugs.sh -progress -output ~/findsecbugs-results.html -html  "$env:CODE_LOC"/target/*.jar
     - name: Upload FindSecBugs Report
       uses: actions/upload-artifact@v2
       with:
